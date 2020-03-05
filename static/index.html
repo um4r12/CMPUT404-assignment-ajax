@@ -57,8 +57,6 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json');
-
-    xhr.setRequestHeader('Connection', 'keep-alive');
     xhr.send(JSON.stringify(objects));
 
 }
@@ -153,7 +151,7 @@ function addEntity(entity, data) {
     world[entity] = data;
     drawNextFrame(); // (but should we?)
     // var object = JSON.stringify({entity: data});
-    sendJSONXMLHTTPRequest("http://127.0.0.1:5000/entity/"+entity, data, null);
+    sendJSONXMLHTTPRequest("/entity/"+entity, data, null);
     //XXX: Send a XHTML Request that updates the entity you just  modified!
 
 }
@@ -286,7 +284,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-    sendJSONXMLHTTPRequest("http://127.0.0.1:5000/world", {}, function(data) {
+    sendJSONXMLHTTPRequest("/world", null,  function(data) {
       console.log("YAY");
       if (JSON.stringify(world) !== JSON.stringify(data)) {
         world = data;
