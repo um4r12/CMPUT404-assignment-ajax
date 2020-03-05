@@ -54,16 +54,19 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
     //XXX: POST to a URL
     //XXX: set the mimetype and the accept headers!
     // Remember to use application/json !
-    xhr.open("POST", url, true);
+    if (objects === null) {
+      xhr.open("GET", url, true);
+    } else {
+      xhr.open("POST", url, true);
+    }
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.send(JSON.stringify(objects));
-
 }
 
 
 world = {};
-
+let hue = 0;
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
     with(context) {
@@ -72,7 +75,11 @@ function drawCircle(context,entity) {
         var x = entity["x"];
         var y = entity["y"];
         //moveTo(x,y);
-        fillStyle = entity["colour"];
+        fillStyle = `hsl(${hue}, 100%, 50%)` //entity["colour"];
+        hue++
+        if (hue >= 360) {
+          hue = 0
+        }
         strokeStyle = fillStyle;
         arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, false);
         stroke();
@@ -285,18 +292,14 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
     sendJSONXMLHTTPRequest("/world", null,  function(data) {
-      console.log("YAY");
-      if (JSON.stringify(world) !== JSON.stringify(data)) {
         world = data;
-        console.log("LOL");
         drawNextFrame();
-      }
     });
     drawFrame();
 }
 
 // 30 frames per second
-setInterval(update, 1000/1.0);
+setInterval(update, 1000/30.0);
 
 
 
