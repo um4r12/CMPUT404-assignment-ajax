@@ -87,8 +87,11 @@ def flask_post_json():
 def hello():
     # need to change this up
     '''Return something coherent here. Or redirect to /static/index.html'''
-    return send_from_directory("static", "index.html")
+    return redirect("/static/index.html")
 
+@app.route('/static/<path:path>')
+def send_path(path):
+    return send_from_directory('static', path)
 
 @app.route("/entity/<entity>", methods=['POST', 'PUT'])
 def update(entity):
@@ -117,9 +120,9 @@ def get_entity(entity):
 @app.route("/clear", methods=['POST', 'GET'])
 def clear():
     '''Clear the world out!'''
+    data = dict()
     myWorld.clear()
-    response = app.response_class(response='', status=200)
-    return response
+    return generate_OK_json_response(data)
 
 
 if __name__ == "__main__":
