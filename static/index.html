@@ -71,7 +71,7 @@ world = {};
 color = 0;
 radius = 1
 maxRadius = false;
-giggles = 0
+//giggles = 0
 // count = 2;
 // toFill = false;
 //XXX: TODO Make this prettier!
@@ -94,15 +94,15 @@ function drawCircle(context,entity) {
         //         maxRadius = true;
         //     }
         // }
-        if (giggles > 360) {
-            giggles = 0;
-        } else {
-            giggles += 2;
-        }
+        //if (giggles > 360) {
+        //    giggles = 0;
+        //} else {
+        //    giggles += 2;
+        //}
         fillStyle = entity["colour"];
         strokeStyle = fillStyle;
         // arc(x, y, radius, 0, 2.0 * Math.PI, false);
-        arc(x, y, (entity["radius"])?entity["radius"]:50, giggles++, 2.0 * Math.PI, maxRadius);
+        arc(x, y, (entity["radius"])?entity["radius"]:50, 0, 2.0 * Math.PI, maxRadius);
         stroke();
         fill();
 
