@@ -152,7 +152,13 @@ function renderFrame() {
 }
 
 var drawNext = true;
+function addMultipleEntities(data) {
+  Object.keys(data).forEach(function(key) {
 
+  addEntity(key, data[key]);
+
+});
+}
 // Signals that there's something to be drawn
 function drawNextFrame() {
     drawNext = true;
@@ -196,18 +202,11 @@ function addEntity(entity, data) {
 
 }
 
-function addMultipleEntities(data) {
-  Object.keys(data).forEach(function(key) {
-
-  addEntity(key, data[key]);
-
-});
-}
 var counter = 0;
 function addEntityWithoutName(data) {
     //var name = "X"+Math.floor((Math.random()*100)+1);
 
-    var name = "X"+(counter++)%100;
+    var name = "X"+(counter++);//%100;
     addEntity(name,data);
 }
 
@@ -373,8 +372,10 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
-    sendJSONXMLHTTPRequest("/world", null,  function(data) {
-        world = data;
+    sendJSONXMLHTTPRequest("/world", world,  function(data) {
+        Object.keys(data).forEach(function(key) {
+		world[key] = data[key];
+	});
         drawNextFrame();
     });
     drawFrame();

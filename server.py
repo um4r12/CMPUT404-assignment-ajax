@@ -105,8 +105,13 @@ def update(entity):
 @app.route("/world", methods=['POST', 'GET'])
 def world():
     '''you should probably return the world here'''
-    data = myWorld.world()
-    return generate_OK_json_response(data)
+    old_world = flask_post_json()
+    curr_world = myWorld.world()
+    if not old_world:
+        updates = curr_world
+    else:
+        updates = {k:v for k,v in curr_world.items() if k not in old_world or v != old_world[k]}
+    return generate_OK_json_response(updates)
 
 
 @app.route("/entity/<entity>")
